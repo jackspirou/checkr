@@ -53,7 +53,8 @@ var WebhookType = struct {
 }
 
 type Webhook struct {
-	msi map[string]interface{}
+	Type string
+	msi  map[string]interface{}
 }
 
 //NewWebhook reads the body of the request and verifies the webhook signature.
@@ -74,7 +75,7 @@ func NewWebhook(r *http.Request) (*Webhook, error) {
 		return nil, err
 	}
 
-	return &Webhook{msi: msi}, nil
+	return &Webhook{Type: msi["type"].(string), msi: msi}, nil
 }
 
 func (w *Webhook) IsReport() bool {

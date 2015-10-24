@@ -58,5 +58,6 @@ func TestWebhook(t *testing.T) {
 
 	rep := w.Report()
 	is.NotNil(rep)
+	is.Equal(w.Type, WebhookType.Report.Completed)
 	is.NotZero(rep.MotorVehicleReportID)
 }
