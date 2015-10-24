@@ -14,6 +14,44 @@ import (
 
 var webhookSignatureKey = "X-Checkr-Signature"
 
+var WebhookType = struct {
+	Report struct {
+		Created   string
+		Upgraded  string
+		Completed string
+		Suspended string
+		Resumed   string
+	}
+	Candidate struct {
+		PreAdverseAction  string
+		PostAdverseAction string
+		Engaged           string
+	}
+}{
+	Report: struct {
+		Created   string
+		Upgraded  string
+		Completed string
+		Suspended string
+		Resumed   string
+	}{
+		Created:   "report.created",
+		Upgraded:  "report.upgraded",
+		Completed: "report.completed",
+		Suspended: "report.suspended",
+		Resumed:   "report.resumed",
+	},
+	Candidate: struct {
+		PreAdverseAction  string
+		PostAdverseAction string
+		Engaged           string
+	}{
+		PreAdverseAction:  "candidate.pre_adverse_action",
+		PostAdverseAction: "candidate.post_adverse_action",
+		Engaged:           "candidate.engaged",
+	},
+}
+
 type Webhook struct {
 	msi map[string]interface{}
 }
