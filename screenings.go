@@ -1,5 +1,15 @@
 package checkr
 
+var ScreeningStatus = struct {
+	Pending  string
+	Clear    string
+	Consider string
+}{
+	Pending:  "pending",
+	Clear:    "clear",
+	Consider: "consider",
+}
+
 type screening struct {
 	ID             string    `json:"id"`
 	Object         string    `json:"object"`

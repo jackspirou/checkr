@@ -1,5 +1,31 @@
 package checkr
 
+var ReportStatus = struct {
+	Pending   string
+	Clear     string
+	Consider  string
+	Suspended string
+	Dispute   string
+}{
+	Pending:   "pending",
+	Clear:     "clear",
+	Consider:  "consider",
+	Suspended: "suspended",
+	Dispute:   "dispute",
+}
+
+var ReportPackages = struct {
+	TaskerStandard string
+	TaskerPro      string
+	DriverStandard string
+	DriverPro      string
+}{
+	TaskerStandard: "tasker_standard",
+	TaskerPro:      "tasker_pro",
+	DriverStandard: "driver_standard",
+	DriverPro:      "driver_pro",
+}
+
 type Report struct {
 	ID                       string    `json:"id"`
 	Object                   string    `json:"object"`
