@@ -4,7 +4,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strings"
+
+	"github.com/jmcvetta/napping"
 
 	"time"
 )
@@ -68,4 +71,12 @@ func basicAuth(username, password string) string {
 
 func assembleURL(parts ...string) string {
 	return strings.Join(parts, "/")
+}
+
+func newSession() *napping.Session {
+	s := &napping.Session{
+		Header: &http.Header{},
+	}
+	s.Header.Set("Authorization", "Basic "+basicAuth(Key, ""))
+	return s
 }

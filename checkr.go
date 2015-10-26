@@ -3,14 +3,10 @@ package checkr
 import (
 	"errors"
 	"fmt"
-	"net/http"
-
-	"github.com/jmcvetta/napping"
 )
 
 var (
-	key  string
-	comm *napping.Session
+	Key string
 )
 
 const (
@@ -18,15 +14,6 @@ const (
 	reportURL    = "https://api.checkr.com/v1/reports"
 	mvrURL       = "https://api.checkr.com/v1/motor_vehicle_reports"
 )
-
-// Init initializes the SDK with your API key
-func Init(APIKey string) {
-	comm = &napping.Session{
-		Header: &http.Header{},
-	}
-	key = APIKey
-	comm.Header.Set("Authorization", "Basic "+basicAuth(APIKey, ""))
-}
 
 type candidates struct{}
 
@@ -36,7 +23,8 @@ var Candidates = candidates{}
 // fields in your candidate object before making the request. Fields generated
 // by Checkr will be populated after the response.
 func (void *candidates) Create(c *Candidate) error {
-	res, err := comm.Post(candidateURL, c, c, nil)
+	s := newSession()
+	res, err := s.Post(candidateURL, c, c, nil)
 	if err != nil {
 		return err
 	}
@@ -48,8 +36,10 @@ func (void *candidates) Create(c *Candidate) error {
 
 // Retrieve retrieves a Candidate by ID.
 func (_ *candidates) Retrieve(id string) (*Candidate, error) {
+	s := newSession()
+
 	var c Candidate
-	res, err := comm.Get(assembleURL(candidateURL, id), nil, &c, nil)
+	res, err := s.Get(assembleURL(candidateURL, id), nil, &c, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -67,9 +57,11 @@ var Reports = reports{}
 // fields in your candidate object before making the request. Fields generated
 // by Checkr will be populated after the response.
 func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
+	s := newSession()
+
 	var r Report
 	var apiErr map[string]interface{}
-	res, err := comm.Post(reportURL, map[string]string{
+	res, err := s.Post(reportURL, map[string]string{
 		"candidate_id": candidateID,
 		"package":      pkg,
 	}, &r, &apiErr)
@@ -84,8 +76,10 @@ func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
 }
 
 func (_ *reports) Retrieve(id string) (*Report, error) {
+	s := newSession()
+
 	var r Report
-	res, err := comm.Get(assembleURL(reportURL, id), nil, &r, nil)
+	res, err := s.Get(assembleURL(reportURL, id), nil, &r, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +94,10 @@ type screenings struct{}
 var Screenings = screenings{}
 
 func (_ *screenings) RetrieveMVR(id string) (*MVRScreening, error) {
+	s := newSession()
+
 	var mvr MVRScreening
-	res, err := comm.Get(assembleURL(mvrURL, id), nil, &mvr, nil)
+	res, err := s.Get(assembleURL(mvrURL, id), nil, &mvr, nil)
 	if err != nil {
 		return nil, err
 	}

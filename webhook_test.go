@@ -45,7 +45,7 @@ func TestWebhook(t *testing.T) {
 	r, err := http.NewRequest("POST", "https://webhook.com", strings.NewReader(inString))
 	is.NotErr(err)
 
-	mac := hmac.New(sha256.New, []byte(key))
+	mac := hmac.New(sha256.New, []byte(Key))
 	mac.Write([]byte(inString))
 	sig := hex.EncodeToString(mac.Sum(nil))
 

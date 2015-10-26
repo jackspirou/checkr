@@ -8,7 +8,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	Init(os.Getenv("CHECKR_KEY"))
+	Key = os.Getenv("CHECKR_KEY")
 	exitVal := m.Run()
 	os.Exit(exitVal)
 }
