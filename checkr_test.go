@@ -3,6 +3,7 @@ package checkr
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/tylerb/is"
 )
@@ -14,19 +15,21 @@ func TestMain(m *testing.M) {
 }
 
 func createCandidate(is *is.Is) *Candidate {
+	dob, err := time.Parse(shortDateFormat, "1984-07-27")
+	is.NotErr(err)
 	c := &Candidate{
 		FirstName:           "Tyler",
 		LastName:            "Bunnell",
 		Email:               "tyler@outdoorsy.co",
 		Phone:               "123-456-7890",
-		DOB:                 "1984-07-27",
+		DOB:                 ShortDate{Time: dob},
 		SSN:                 "111-11-2001",
 		Zipcode:             "84343",
 		DriverLicenseNumber: "F1112001",
 		DriverLicenseState:  "CA",
 	}
 
-	err := Candidates.Create(c)
+	err = Candidates.Create(c)
 	is.NotErr(err)
 
 	is.NotZero(c.ID)

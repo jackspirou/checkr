@@ -8,21 +8,21 @@ type Candidate struct {
 	CreatedAt Timestamp `json:"created_at,omitempty"`
 
 	// Sent to create new Candidate
-	FirstName                   string   `json:"first_name"`
-	MiddleName                  string   `json:"middle_name,omitempty"`
-	LastName                    string   `json:"last_name"`
-	Email                       string   `json:"email"`
-	Phone                       string   `json:"phone"`
-	Zipcode                     string   `json:"zipcode,omitempty"`
-	DOB                         string   `json:"dob,omitempty"`
-	SSN                         string   `json:"ssn,omitempty"`
-	DriverLicenseNumber         string   `json:"driver_license_number,omitempty"`
-	DriverLicenseState          string   `json:"driver_license_state,omitempty"`
-	PreviousDriverLicenseNumber string   `json:"previous_driver_license_number,omitempty"`
-	PreviousDriverLicenseState  string   `json:"previous_driver_license_state,omitempty"`
-	CopyRequested               bool     `json:"copy_requested,omitempty"`
-	Adjudication                string   `json:"adjudication,omitempty"`
-	CustomID                    string   `json:"custom_id,omitempty"`
-	ReportIDs                   []string `json:"report_ids,omitempty"`
-	GeoIDs                      []string `json:"geo_ids,omitempty"`
+	FirstName                   string    `json:"first_name"`
+	MiddleName                  string    `json:"middle_name,omitempty"`
+	LastName                    string    `json:"last_name"`
+	Email                       string    `json:"email"`
+	Phone                       string    `json:"phone"`
+	Zipcode                     string    `json:"zipcode,omitempty"`
+	DOB                         ShortDate `json:"dob,omitempty"`
+	SSN                         string    `json:"ssn,omitempty"`
+	DriverLicenseNumber         string    `json:"driver_license_number,omitempty"`
+	DriverLicenseState          string    `json:"driver_license_state,omitempty"`
+	PreviousDriverLicenseNumber string    `json:"previous_driver_license_number,omitempty"`
+	PreviousDriverLicenseState  string    `json:"previous_driver_license_state,omitempty"`
+	CopyRequested               bool      `json:"copy_requested,omitempty"`
+	Adjudication                string    `json:"adjudication,omitempty"`
+	CustomID                    string    `json:"custom_id,omitempty"`
+	ReportIDs                   []string  `json:"report_ids,omitempty"`
+	GeoIDs                      []string  `json:"geo_ids,omitempty"`
 }
