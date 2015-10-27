@@ -1,10 +1,5 @@
 package checkr
 
-import (
-	"errors"
-	"fmt"
-)
-
 var (
 	Key string
 )
@@ -15,6 +10,12 @@ const (
 	mvrURL       = "https://api.checkr.com/v1/motor_vehicle_reports"
 )
 
+type apiError map[string]interface{}
+
+func (a apiError) Error() string {
+	return a["error"].(string)
+}
+
 type candidates struct{}
 
 var Candidates = candidates{}
@@ -24,12 +25,14 @@ var Candidates = candidates{}
 // by Checkr will be populated after the response.
 func (void *candidates) Create(c *Candidate) error {
 	s := newSession()
-	res, err := s.Post(candidateURL, c, c, nil)
+
+	var apiErr apiError
+	res, err := s.Post(candidateURL, c, c, &apiErr)
 	if err != nil {
 		return err
 	}
 	if res.Status() != 201 {
-		return errors.New("Unable to create Candidate.")
+		return apiErr
 	}
 	return nil
 }
@@ -38,13 +41,14 @@ func (void *candidates) Create(c *Candidate) error {
 func (_ *candidates) Retrieve(id string) (*Candidate, error) {
 	s := newSession()
 
+	var apiErr apiError
 	var c Candidate
-	res, err := s.Get(assembleURL(candidateURL, id), nil, &c, nil)
+	res, err := s.Get(assembleURL(candidateURL, id), nil, &c, &apiErr)
 	if err != nil {
 		return nil, err
 	}
 	if res.Status() != 200 {
-		return nil, errors.New("Unable to read Candidate.")
+		return nil, apiErr
 	}
 	return &c, nil
 }
@@ -59,8 +63,8 @@ var Reports = reports{}
 func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
 	s := newSession()
 
+	var apiErr apiError
 	var r Report
-	var apiErr map[string]interface{}
 	res, err := s.Post(reportURL, map[string]string{
 		"candidate_id": candidateID,
 		"package":      pkg,
@@ -69,8 +73,7 @@ func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
 		return nil, err
 	}
 	if res.Status() != 201 {
-		fmt.Println(apiErr)
-		return nil, errors.New("Unable to create Report.")
+		return nil, apiErr
 	}
 	return &r, nil
 }
@@ -78,13 +81,14 @@ func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
 func (_ *reports) Retrieve(id string) (*Report, error) {
 	s := newSession()
 
+	var apiErr apiError
 	var r Report
-	res, err := s.Get(assembleURL(reportURL, id), nil, &r, nil)
+	res, err := s.Get(assembleURL(reportURL, id), nil, &r, &apiErr)
 	if err != nil {
 		return nil, err
 	}
 	if res.Status() != 200 {
-		return nil, errors.New("Unable to read Report.")
+		return nil, apiErr
 	}
 	return &r, nil
 }
@@ -96,13 +100,14 @@ var Screenings = screenings{}
 func (_ *screenings) RetrieveMVR(id string) (*MVRScreening, error) {
 	s := newSession()
 
+	var apiErr apiError
 	var mvr MVRScreening
-	res, err := s.Get(assembleURL(mvrURL, id), nil, &mvr, nil)
+	res, err := s.Get(assembleURL(mvrURL, id), nil, &mvr, &apiErr)
 	if err != nil {
 		return nil, err
 	}
 	if res.Status() != 200 {
-		return nil, errors.New("Unable to read MVR Screening.")
+		return nil, apiErr
 	}
 	return &mvr, nil
 }
