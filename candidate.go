@@ -10,6 +10,7 @@ type Candidate struct {
 	// Sent to create new Candidate
 	FirstName                   string    `json:"first_name"`
 	MiddleName                  string    `json:"middle_name,omitempty"`
+	NoMiddleName                bool      `json:"no_middle_name"`
 	LastName                    string    `json:"last_name"`
 	Email                       string    `json:"email"`
 	Phone                       string    `json:"phone"`
