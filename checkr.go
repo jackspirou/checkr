@@ -5,9 +5,10 @@ var (
 )
 
 const (
-	candidateURL = "https://api.checkr.com/v1/candidates"
-	reportURL    = "https://api.checkr.com/v1/reports"
-	mvrURL       = "https://api.checkr.com/v1/motor_vehicle_reports"
+	candidateURL         = "https://api.checkr.com/v1/candidates"
+	reportURL            = "https://api.checkr.com/v1/reports"
+	mvrURL               = "https://api.checkr.com/v1/motor_vehicle_reports"
+	verificationLinksURL = "https://api.checkr.com/v1/reports/%s/verification_links"
 )
 
 type apiError map[string]interface{}
@@ -23,7 +24,7 @@ var Candidates = candidates{}
 // Create creates a new Candidate object in Checkr. Populate the appropriate
 // fields in your candidate object before making the request. Fields generated
 // by Checkr will be populated after the response.
-func (void *candidates) Create(c *Candidate) error {
+func (_ *candidates) Create(c *Candidate) error {
 	s := newSession()
 
 	var apiErr apiError

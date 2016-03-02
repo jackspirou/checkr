@@ -68,3 +68,5 @@ func TestCheckrReports(t *testing.T) {
 	is.NotZero(r.SSNTraceID)
 	is.NotZero(r.MotorVehicleReportID)
 }
+
+// TODO: test verification links GET

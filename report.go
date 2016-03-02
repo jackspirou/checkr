@@ -1,5 +1,9 @@
 package checkr
 
+import (
+	"fmt"
+)
+
 var ReportStatus = struct {
 	Pending   string
 	Clear     string
@@ -41,4 +45,28 @@ type Report struct {
 	NationalCriminalSearchID string    `json:"national_criminal_search_id"`
 	CountyCriminalSearchIds  []string  `json:"county_criminal_search_ids"`
 	MotorVehicleReportID     string    `json:"motor_vehicle_report_id"`
+}
+
+type Verification struct {
+	CompletedAt      interface{} `json:"completed_at"`
+	CreatedAt        string      `json:"created_at"`
+	ID               string      `json:"id"`
+	Object           string      `json:"object"`
+	URI              string      `json:"uri"`
+	VerificationType string      `json:"verification_type"`
+	VerificationURL  string      `json:"verification_url"`
+}
+
+func (r *Report) GetVerificationLinks() ([]*Verification, error) {
+	s := newSession()
+	var apiErr apiError
+	var vl []*Verification
+	res, err := s.Get(fmt.Sprintf(verificationLinksURL, r.ID), nil, &vl, &apiErr)
+	if err != nil {
+		return nil, err
+	}
+	if res.Status() != 200 {
+		return nil, apiErr
+	}
+	return vl, nil
 }
