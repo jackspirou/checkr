@@ -23,9 +23,11 @@ var WebhookType = struct {
 		Resumed   string
 	}
 	Candidate struct {
-		PreAdverseAction  string
-		PostAdverseAction string
-		Engaged           string
+		PreAdverseAction      string
+		PostAdverseAction     string
+		Engaged               string
+		DriverLicenseRequired string
+		IDRequired            string
 	}
 }{
 	Report: struct {
@@ -42,13 +44,17 @@ var WebhookType = struct {
 		Resumed:   "report.resumed",
 	},
 	Candidate: struct {
-		PreAdverseAction  string
-		PostAdverseAction string
-		Engaged           string
+		PreAdverseAction      string
+		PostAdverseAction     string
+		Engaged               string
+		DriverLicenseRequired string
+		IDRequired            string
 	}{
-		PreAdverseAction:  "candidate.pre_adverse_action",
-		PostAdverseAction: "candidate.post_adverse_action",
-		Engaged:           "candidate.engaged",
+		PreAdverseAction:      "candidate.pre_adverse_action",
+		PostAdverseAction:     "candidate.post_adverse_action",
+		Engaged:               "candidate.engaged",
+		DriverLicenseRequired: "candidate.driver_license_required",
+		IDRequired:            "candidate.id_required",
 	},
 }
 
@@ -79,11 +85,11 @@ func NewWebhook(r *http.Request) (*Webhook, error) {
 }
 
 func (w *Webhook) IsReport() bool {
-	return strings.Index(w.msi["type"].(string), "report.") != -1
+	return strings.Index(w.Type, "report.") != -1
 }
 
 func (w *Webhook) IsCandidate() bool {
-	return strings.Index(w.msi["type"].(string), "candidate.") != -1
+	return strings.Index(w.Type, "candidate.") != -1
 }
 
 func (w *Webhook) Report() *Report {
