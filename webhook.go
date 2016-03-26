@@ -59,8 +59,13 @@ var WebhookType = struct {
 }
 
 type Webhook struct {
-	Type string
-	msi  map[string]interface{}
+	ID        string    `json:"id"`
+	Object    string    `json:"object"`
+	Type      string    `json:"type"`
+	CreatedAt Timestamp `json:"created_at"`
+	Data      struct {
+		Object json.RawMessage `json:"object"`
+	} `json:"data"`
 }
 
 //NewWebhook reads the body of the request and verifies the webhook signature.
@@ -75,13 +80,13 @@ func NewWebhook(r *http.Request) (*Webhook, error) {
 		return nil, ErrBadSignature
 	}
 
-	var msi map[string]interface{}
-	err = json.Unmarshal(b, &msi)
+	var w Webhook
+	err = json.Unmarshal(b, &w)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Webhook{Type: msi["type"].(string), msi: msi}, nil
+	return &w, nil
 }
 
 func (w *Webhook) IsReport() bool {
@@ -120,9 +125,5 @@ func compareMAC(message, expectedMAC, key []byte) bool {
 }
 
 func (w *Webhook) unmarshalWebhookObject(to interface{}) error {
-	b, err := json.Marshal(w.msi["data"].(map[string]interface{})["object"])
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(b, &to)
+	return json.Unmarshal(w.Data.Object, &to)
 }
