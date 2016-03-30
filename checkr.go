@@ -24,7 +24,7 @@ var Candidates = candidates{}
 // Create creates a new Candidate object in Checkr. Populate the appropriate
 // fields in your candidate object before making the request. Fields generated
 // by Checkr will be populated after the response.
-func (_ *candidates) Create(c *Candidate) error {
+func (candidates) Create(c *Candidate) error {
 	s := newSession()
 
 	var apiErr apiError
@@ -39,7 +39,7 @@ func (_ *candidates) Create(c *Candidate) error {
 }
 
 // Retrieve retrieves a Candidate by ID.
-func (_ *candidates) Retrieve(id string) (*Candidate, error) {
+func (candidates) Retrieve(id string) (*Candidate, error) {
 	s := newSession()
 
 	var apiErr apiError
@@ -61,7 +61,7 @@ var Reports = reports{}
 // Create creates a new Candidate object in Checkr. Populate the appropriate
 // fields in your candidate object before making the request. Fields generated
 // by Checkr will be populated after the response.
-func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
+func (reports) Create(candidateID string, pkg string) (*Report, error) {
 	s := newSession()
 
 	var apiErr apiError
@@ -79,7 +79,7 @@ func (_ *reports) Create(candidateID string, pkg string) (*Report, error) {
 	return &r, nil
 }
 
-func (_ *reports) Retrieve(id string) (*Report, error) {
+func (reports) Retrieve(id string) (*Report, error) {
 	s := newSession()
 
 	var apiErr apiError
@@ -98,7 +98,7 @@ type screenings struct{}
 
 var Screenings = screenings{}
 
-func (_ *screenings) RetrieveMVR(id string) (*MVRScreening, error) {
+func (screenings) RetrieveMVR(id string) (*MVRScreening, error) {
 	s := newSession()
 
 	var apiErr apiError

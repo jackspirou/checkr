@@ -74,6 +74,7 @@ func NewWebhook(r *http.Request) (*Webhook, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer r.Body.Close()
 
 	sig := r.Header.Get(webhookSignatureKey)
 	if !compareMAC(b, []byte(sig), []byte(Key)) {
