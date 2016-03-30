@@ -48,25 +48,29 @@ type Report struct {
 }
 
 type Verification struct {
-	CompletedAt      interface{} `json:"completed_at"`
-	CreatedAt        string      `json:"created_at"`
-	ID               string      `json:"id"`
-	Object           string      `json:"object"`
-	URI              string      `json:"uri"`
-	VerificationType string      `json:"verification_type"`
-	VerificationURL  string      `json:"verification_url"`
+	Object string `json:"object"`
+	Count  int    `json:"count"`
+	Data   []struct {
+		CompletedAt      Timestamp `json:"completed_at"`
+		CreatedAt        string    `json:"created_at"`
+		ID               string    `json:"id"`
+		Object           string    `json:"object"`
+		URI              string    `json:"uri"`
+		VerificationType string    `json:"verification_type"`
+		VerificationURL  string    `json:"verification_url"`
+	} `json:"data"`
 }
 
-func (r *Report) GetVerificationLinks() ([]*Verification, error) {
+func (r *Report) GetVerificationLinks() (Verification, error) {
 	s := newSession()
 	var apiErr apiError
-	var vl []*Verification
+	var vl Verification
 	res, err := s.Get(fmt.Sprintf(verificationLinksURL, r.ID), nil, &vl, &apiErr)
 	if err != nil {
-		return nil, err
+		return Verification{}, err
 	}
 	if res.Status() != 200 {
-		return nil, apiErr
+		return Verification{}, apiErr
 	}
 	return vl, nil
 }
