@@ -8,7 +8,7 @@ const (
 	candidateURL         = "https://api.checkr.com/v1/candidates"
 	reportURL            = "https://api.checkr.com/v1/reports"
 	mvrURL               = "https://api.checkr.com/v1/motor_vehicle_reports"
-	verificationLinksURL = "https://api.checkr.com/v1/reports/%s/verification_links"
+	verificationLinksURL = "https://api.checkr.com/v1/reports/%s/verifications"
 )
 
 type apiError map[string]interface{}
