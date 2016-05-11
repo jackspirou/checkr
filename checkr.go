@@ -14,7 +14,10 @@ const (
 type apiError map[string]interface{}
 
 func (a apiError) Error() string {
-	return a["error"].(string)
+	if a != nil && a["error"] != nil {
+		return a["error"].(string)
+	}
+	return "There was an error processing your request."
 }
 
 type candidates struct{}
